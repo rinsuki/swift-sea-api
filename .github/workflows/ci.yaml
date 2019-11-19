@@ -1,0 +1,30 @@
+jobs:
+  linux:
+    strategy:
+      matrix:
+        ubuntu-version:
+          - 16
+          - 18
+        swift-version:
+          - '5.1.2'
+          - '5.1'
+    runs-on: ubuntu-${{ matrix.ubuntu-version }}.04
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use cached Swift runtime
+      uses: actions/cache@v1
+      id: cache-swift-runtime
+      with:
+        path: swift-runtime
+        key: ${{ matrix.ubuntu-version }}.04-${{ matrix.swift-version }}
+    - name: Download Swift Runtime
+      if: steps.cache-swift-runtime.outputs.cache-hit != 'true'
+      run: |
+        mkdir swift-runtime
+        cd swift-runtime
+        wget -O swift.tar.gz https://swift.org/builds/swift-${{ matrix.swift-version }}-release/ubuntu${{ matrix.ubuntu-version }}04/swift-${{ matrix.swift-version }}-RELEASE/swift-${{ matrix.swift-version }}-RELEASE-ubuntu${{ matrix.ubuntu-version }}.04.tar.gz
+        tar xf swift.tar.gz
+        mv swift-${{ matrix.swift-version }}-RELEASE-ubuntu${{ matrix.ubuntu-version }}.04/usr ./usr
+        rm -r swift.tar.gz swift-${{ matrix.swift-version }}-RELEASE-ubuntu${{ matrix.ubuntu-version }}.04
+    
