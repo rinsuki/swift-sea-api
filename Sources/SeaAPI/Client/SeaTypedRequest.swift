@@ -71,6 +71,7 @@ extension SeaUserCredential {
                 callback(.init {
                     throw SeaRequestError.apiError(try SeaAPIJSONDecoder().decode(SeaAPIErrorWrapper.self, from: data).errors)
                 })
+                return
             }
             let decoder = SeaAPIJSONDecoder()
             callback(Result { try decoder.decode(Endpoint.Response.self, from: data) })
