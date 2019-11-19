@@ -27,4 +27,4 @@ jobs:
         tar xf swift.tar.gz
         mv swift-${{ matrix.swift-version }}-RELEASE-ubuntu${{ matrix.ubuntu-version }}.04/usr ./usr
         rm -r swift.tar.gz swift-${{ matrix.swift-version }}-RELEASE-ubuntu${{ matrix.ubuntu-version }}.04
-    
+        ./usr/bin/swift -v
