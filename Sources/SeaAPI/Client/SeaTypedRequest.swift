@@ -52,6 +52,7 @@ extension SeaUserCredential {
         case .httpBody(let method, let data):
             httpReq = getRequest(path: r.endpoint)
             httpReq.httpMethod = method
+            httpReq.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
             httpReq.httpBody = data
         }
         return SeaURLSession.dataTask(with: httpReq) { data, res, error in
