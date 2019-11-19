@@ -23,7 +23,7 @@ jobs:
       id: cache-swift-runtime
       with:
         path: swift-runtime
-        key: ${{ matrix.ubuntu-version }}.04-${{ matrix.swift-version }}
+        key: ubuntu${{ matrix.ubuntu-version }}.04-swift${{ matrix.swift-version }}
     - name: Download Swift Runtime
       if: steps.cache-swift-runtime.outputs.cache-hit != 'true'
       run: |
