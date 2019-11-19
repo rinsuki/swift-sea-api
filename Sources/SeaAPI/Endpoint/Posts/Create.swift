@@ -25,7 +25,7 @@ extension SeaAPI {
         var fileIds: [Int]?
         var sendNotify: SendNotify?
         
-        public init(text: String, fileIds: [Int]? = nil, sendNotify: SendNotify?) {
+        public init(text: String, fileIds: [Int]? = nil, sendNotify: SendNotify? = nil) {
             self.text = text
             self.fileIds = fileIds
             self.sendNotify = sendNotify
