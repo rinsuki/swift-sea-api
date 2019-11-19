@@ -8,15 +8,15 @@
 import Foundation
 
 extension SeaAPI {
-    struct CreatePost: SeaAPIEndpoint, Codable {
-        let endpoint: String = "/api/v1/posts"
-        var body: SeaAPIBody {
+    public struct CreatePost: SeaAPIEndpoint, Codable {
+        public let endpoint: String = "/api/v1/posts"
+        public var body: SeaAPIBody {
             let encoder = JSONEncoder()
             return .httpBody(method: "POST", try! encoder.encode(self))
         }
-        typealias Response = SeaPost
+        public typealias Response = SeaPost
         
-        enum SendNotify: String, Codable {
+        public enum SendNotify: String, Codable {
             case none
             case send
         }
@@ -24,6 +24,12 @@ extension SeaAPI {
         var text: String
         var fileIds: [Int]?
         var sendNotify: SendNotify?
+        
+        public init(text: String, fileIds: [Int]? = nil, sendNotify: SendNotify?) {
+            self.text = text
+            self.fileIds = fileIds
+            self.sendNotify = sendNotify
+        }
         
         enum CodingKeys: String, CodingKey {
             case text
