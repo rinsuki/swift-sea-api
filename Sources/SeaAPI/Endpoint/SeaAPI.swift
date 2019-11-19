@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SeaAPI {
+public class SeaAPI {
     @available(*, unavailable)
     init() {
         fatalError("unavailable")

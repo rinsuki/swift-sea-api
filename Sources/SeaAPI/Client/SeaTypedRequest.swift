@@ -10,19 +10,19 @@ import Foundation
 import FoundationNetworking
 #endif
 
-enum SeaAPIBody {
+public enum SeaAPIBody {
     case query([String: String])
     case httpBody(method: String, Data)
 }
 
-protocol SeaAPIEndpoint {
+public protocol SeaAPIEndpoint {
     var endpoint: String { get }
     var body: SeaAPIBody { get }
     associatedtype Response
 }
 
-enum SeaAPIError: Decodable {
-    init(from decoder: Decoder) throws {
+public enum SeaAPIError: Decodable {
+    public init(from decoder: Decoder) throws {
         self = .simple(try decoder.container(keyedBy: CodingKeys.self).decode(String.self, forKey: .message))
     }
     
@@ -37,13 +37,13 @@ struct SeaAPIErrorWrapper: Decodable {
     let errors: [SeaAPIError]
 }
 
-enum SeaRequestError: Error {
+public enum SeaRequestError: Error {
     case apiError([SeaAPIError])
     case unknownError(String)
 }
 
 extension SeaUserCredential {
-    func request<Endpoint: SeaAPIEndpoint>(r: Endpoint, callback: @escaping (Result<Endpoint.Response, Error>) -> Void)
+    public func request<Endpoint: SeaAPIEndpoint>(r: Endpoint, callback: @escaping (Result<Endpoint.Response, Error>) -> Void)
         where Endpoint.Response: Decodable {
         var httpReq: URLRequest
         switch r.body {
