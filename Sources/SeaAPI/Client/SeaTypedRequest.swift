@@ -43,7 +43,7 @@ public enum SeaRequestError: Error {
 }
 
 extension SeaUserCredential {
-    public func request<Endpoint: SeaAPIEndpoint>(r: Endpoint, callback: @escaping (Result<Endpoint.Response, Error>) -> Void)
+    public func request<Endpoint: SeaAPIEndpoint>(r: Endpoint, callback: @escaping (Result<Endpoint.Response, Error>) -> Void) -> URLSessionDataTask
         where Endpoint.Response: Decodable {
         var httpReq: URLRequest
         switch r.body {
@@ -54,7 +54,7 @@ extension SeaUserCredential {
             httpReq.httpMethod = method
             httpReq.httpBody = data
         }
-        SeaURLSession.dataTask(with: httpReq) { data, res, error in
+        return SeaURLSession.dataTask(with: httpReq) { data, res, error in
             if let error = error {
                 callback(.failure(error))
                 return
