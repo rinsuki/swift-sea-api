@@ -20,7 +20,7 @@ public struct SeaUserCredential: Codable {
         if queryItems.count > 0 {
             pathAndQuery = "?" + queryItems.map { [$0, $1].map { $0.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! }.joined(separator: "=") }.joined(separator: "&")
         }
-        var request = URLRequest(url: baseUrl.appendingPathComponent(path))
+        var request = URLRequest(url: baseUrl.appendingPathComponent(pathAndQuery))
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
