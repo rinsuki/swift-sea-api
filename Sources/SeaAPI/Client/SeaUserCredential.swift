@@ -15,7 +15,7 @@ public struct SeaUserCredential: Codable {
     let baseUrl: URL
     let token: String
     
-    init(baseUrl: URL, token: String) {
+    public init(baseUrl: URL, token: String) {
         self.baseUrl = baseUrl
         self.token = token
     }
