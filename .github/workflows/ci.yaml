@@ -14,6 +14,7 @@ jobs:
         swift-version:
           - '5.1.2'
           - '5.1'
+          - '5.0'
     runs-on: ubuntu-${{ matrix.ubuntu-version }}.04
 
     steps:
@@ -37,3 +38,16 @@ jobs:
       run: |
         export PATH="$(pwd)/swift-runtime/usr/bin:$PATH"
         swift test
+  mac:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        xcode-version:
+          - 11
+          - 11.1
+          - 11.2
+    steps:
+    - uses: actions/checkout@v1
+    - run: xcode-select -s /Applications/Xcode_${{ matrix.xcode-version }}.app
+    - name: Test
+      run: swift test
