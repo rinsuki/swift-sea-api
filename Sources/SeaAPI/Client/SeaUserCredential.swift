@@ -15,6 +15,11 @@ public struct SeaUserCredential: Codable {
     let baseUrl: URL
     let token: String
     
+    init(baseUrl: URL, token: String) {
+        self.baseUrl = baseUrl
+        self.token = token
+    }
+    
     func getRequest(path: String, queryItems: [String: String] = [:]) -> URLRequest {
         var pathAndQuery = path
         if queryItems.count > 0 {
