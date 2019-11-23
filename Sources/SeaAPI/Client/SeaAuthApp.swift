@@ -45,6 +45,7 @@ extension SeaAuthApp {
         let code: String
         let grantType: OAuthGrantType
         let state: String?
+        let includeUserObject = "v1"
         
         enum CodingKeys: String, CodingKey {
             case clientId = "client_id"
@@ -52,6 +53,7 @@ extension SeaAuthApp {
             case code
             case grantType = "grant_type"
             case state
+            case includeUserObject = "include_user_object"
         }
         
         init(app: SeaAuthApp, code: String, state: String? = nil, grantType: OAuthGrantType = .code) {
