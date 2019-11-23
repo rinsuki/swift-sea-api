@@ -63,13 +63,24 @@ extension SeaAuthApp {
         }
     }
     
-    public func oauthTokenRequest(code: String, state: String? = nil) -> URLRequest {
+    public func getOAuthToken(code: String, state: String? = nil, callback: @escaping (Result<(token: String, user: SeaUser), Error>) -> Void) -> URLSessionDataTask {
         var components = URLComponents()
         components.path = "oauth/token"
         var request = URLRequest(url: components.url(relativeTo: baseUrl)!, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: .infinity)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try! JSONEncoder().encode(OAuthTokenRequest(app: self, code: code, state: state, grantType: .code))
-        return request
+        struct GetTokenResult: Decodable {
+            var access_token: String
+            var user: SeaUser
+        }
+        return SeaURLSession.decodableTask(with: request) { (result: Result<GetTokenResult, Error>) in
+            switch result {
+            case .success(let result):
+                callback(.success((token: result.access_token, user: result.user)))
+            case .failure(let error):
+                callback(.failure(error))
+            }
+        }
     }
 }

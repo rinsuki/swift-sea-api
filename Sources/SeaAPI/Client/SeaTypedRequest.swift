@@ -42,20 +42,9 @@ public enum SeaRequestError: Error {
     case unknownError(String)
 }
 
-extension SeaUserCredential {
-    public func request<Endpoint: SeaAPIEndpoint>(r: Endpoint, callback: @escaping (Result<Endpoint.Response, Error>) -> Void) -> URLSessionDataTask
-        where Endpoint.Response: Decodable {
-        var httpReq: URLRequest
-        switch r.body {
-        case .query(let params):
-            httpReq = getRequest(path: r.endpoint, queryItems: params)
-        case .httpBody(let method, let data):
-            httpReq = getRequest(path: r.endpoint)
-            httpReq.httpMethod = method
-            httpReq.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
-            httpReq.httpBody = data
-        }
-        return SeaURLSession.dataTask(with: httpReq) { data, res, error in
+extension URLSession {
+    func decodableTask<T: Decodable>(with: URLRequest, callback: @escaping (Result<T, Error>) -> Void) -> URLSessionDataTask {
+        return self.dataTask(with: with) { data, res, error in
             if let error = error {
                 callback(.failure(error))
                 return
@@ -75,7 +64,24 @@ extension SeaUserCredential {
                 return
             }
             let decoder = SeaAPIJSONDecoder()
-            callback(Result { try decoder.decode(Endpoint.Response.self, from: data) })
+            callback(Result { try decoder.decode(T.self, from: data) })
         }
+    }
+}
+
+extension SeaUserCredential {
+    public func request<Endpoint: SeaAPIEndpoint>(r: Endpoint, callback: @escaping (Result<Endpoint.Response, Error>) -> Void) -> URLSessionDataTask
+        where Endpoint.Response: Decodable {
+        var httpReq: URLRequest
+        switch r.body {
+        case .query(let params):
+            httpReq = getRequest(path: r.endpoint, queryItems: params)
+        case .httpBody(let method, let data):
+            httpReq = getRequest(path: r.endpoint)
+            httpReq.httpMethod = method
+            httpReq.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
+            httpReq.httpBody = data
+        }
+        return SeaURLSession.decodableTask(with: httpReq, callback: callback)
     }
 }
