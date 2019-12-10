@@ -26,7 +26,7 @@ extension SeaAPI {
         var maxId: Int?
         var search: String?
         
-        public init(count: Int?, sinceId: Int?, maxId: Int?, search: String?) {
+        public init(count: Int? = nil, sinceId: Int? = nil, maxId: Int? = nil, search: String? = nil) {
             self.count = count
             self.sinceId = sinceId
             self.maxId = maxId
