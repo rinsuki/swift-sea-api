@@ -21,11 +21,10 @@ public struct SeaUserCredential: Codable {
     }
     
     func getRequest(path: String, queryItems: [String: String] = [:]) -> URLRequest {
-        var pathAndQuery = path
-        if queryItems.count > 0 {
-            pathAndQuery = "?" + queryItems.map { [$0, $1].map { $0.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)! }.joined(separator: "=") }.joined(separator: "&")
-        }
-        var request = URLRequest(url: baseUrl.appendingPathComponent(pathAndQuery))
+        var urlComponents = URLComponents(url: baseUrl, resolvingAgainstBaseURL: false)!
+        urlComponents.path += path
+        urlComponents.queryItems = queryItems.map { .init(name: $0, value: $1) }
+        var request = URLRequest(url: urlComponents.url!)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
