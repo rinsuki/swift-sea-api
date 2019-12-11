@@ -23,7 +23,9 @@ public struct SeaUserCredential: Codable {
     func getRequest(path: String, queryItems: [String: String] = [:]) -> URLRequest {
         var urlComponents = URLComponents(url: baseUrl, resolvingAgainstBaseURL: false)!
         urlComponents.path += path
-        urlComponents.queryItems = queryItems.map { .init(name: $0, value: $1) }
+        if queryItems.count > 0 {
+            urlComponents.queryItems = queryItems.map { .init(name: $0, value: $1) }
+        }
         var request = URLRequest(url: urlComponents.url!)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
