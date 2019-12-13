@@ -8,7 +8,7 @@
 import Foundation
 
 extension SeaAPI {
-    struct UploadFileToAlbum: SeaAPIEndpoint, Encodable {
+    public struct UploadFileToAlbum: SeaAPIEndpoint, Encodable {
         public let endpoint: String = "/api/v1/album/files/raw_upload"
         public var body: SeaAPIBody {
             return .httpBody(method: "POST", data)
@@ -20,17 +20,24 @@ extension SeaAPI {
                 "X-Sea-API-Arg": String(data: try! encoder.encode(self), encoding: .utf8)!
             ]
         }
-        typealias Response = SeaFile
+        public typealias Response = SeaFile
         
-        enum IfNameConflicted: String, Codable {
+        public enum IfNameConflicted: String, Codable {
             case error
             case addDateString = "add-date-string"
         }
         
+        var data: Data
         var name: String
         var ifNameConflicted: IfNameConflicted
         var folderId: Int?
-        var data: Data
+        
+        init(data: Data, name: String, ifNameConflicted: IfNameConflicted = .addDateString, folderId: Int? = nil) {
+            self.data = data
+            self.name = name
+            self.ifNameConflicted = ifNameConflicted
+            self.folderId = folderId
+        }
         
         enum CodingKeys: String, CodingKey {
             case name
