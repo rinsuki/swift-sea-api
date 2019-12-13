@@ -18,7 +18,12 @@ public enum SeaAPIBody {
 public protocol SeaAPIEndpoint {
     var endpoint: String { get }
     var body: SeaAPIBody { get }
+    var headers: [String: String] { get }
     associatedtype Response
+}
+
+public extension SeaAPIEndpoint {
+    var headers: [String: String] { return .init() }
 }
 
 public enum SeaAPIError: Decodable {
@@ -81,6 +86,9 @@ extension SeaUserCredential {
             httpReq.httpMethod = method
             httpReq.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
             httpReq.httpBody = data
+        }
+        for (key, value) in r.headers {
+            httpReq.setValue(value, forHTTPHeaderField: key)
         }
         return SeaURLSession.decodableTask(with: httpReq, callback: callback)
     }
