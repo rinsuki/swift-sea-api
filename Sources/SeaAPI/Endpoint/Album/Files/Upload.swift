@@ -32,7 +32,7 @@ extension SeaAPI {
         var ifNameConflicted: IfNameConflicted
         var folderId: Int?
         
-        init(data: Data, name: String, ifNameConflicted: IfNameConflicted = .addDateString, folderId: Int? = nil) {
+        public init(data: Data, name: String, ifNameConflicted: IfNameConflicted = .addDateString, folderId: Int? = nil) {
             self.data = data
             self.name = name
             self.ifNameConflicted = ifNameConflicted
