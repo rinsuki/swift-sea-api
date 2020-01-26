@@ -24,6 +24,7 @@ extension SeaAPI {
         var text: String
         var fileIds: [Int]?
         var sendNotify: SendNotify?
+        var inReplyToId: Int?
         
         public init(text: String, fileIds: [Int]? = nil, sendNotify: SendNotify? = nil) {
             self.text = text
@@ -35,6 +36,7 @@ extension SeaAPI {
             case text
             case fileIds
             case sendNotify = "notify"
+            case inReplyToId
         }
     }
 }
