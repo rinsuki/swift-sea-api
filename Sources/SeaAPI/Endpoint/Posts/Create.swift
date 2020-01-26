@@ -26,10 +26,11 @@ extension SeaAPI {
         var sendNotify: SendNotify?
         var inReplyToId: Int?
         
-        public init(text: String, fileIds: [Int]? = nil, sendNotify: SendNotify? = nil) {
+        public init(text: String, fileIds: [Int]? = nil, sendNotify: SendNotify? = nil, inReplyToId: Int? = nil) {
             self.text = text
             self.fileIds = fileIds
             self.sendNotify = sendNotify
+            self.inReplyToId = inReplyToId
         }
         
         enum CodingKeys: String, CodingKey {
